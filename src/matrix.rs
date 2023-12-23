@@ -1,7 +1,7 @@
 use rand::prelude::*;
 use std::ops::{Add, Sub, Mul};
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Matrix{
     pub rows: usize,
     pub cols: usize,
@@ -29,6 +29,24 @@ impl Matrix{
         }
 
         res
+    }
+
+    pub fn map(&self, functor: &dyn Fn(f64) -> f64) -> Matrix{
+        Matrix::from_data(
+            (self.data)
+                .clone()
+                .into_iter()
+                .map(|row| row.into_iter().map(|x| functor(x)).collect())
+                .collect()
+        )
+    }
+
+    pub fn from_data(data: Vec<Vec<f64>>) -> Matrix {
+        Matrix {
+            rows: data.len(),
+            cols: data[0].len(),
+            data
+        }
     }
 }
 
