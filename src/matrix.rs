@@ -31,7 +31,10 @@ impl Matrix{
         res
     }
 
-    pub fn map(&self, functor: &dyn Fn(f64) -> f64) -> Matrix{
+    pub fn map<F>(&self, functor: F) -> Matrix
+    where
+        F: Fn(f64) -> f64,
+    {
         Matrix::from_data(
             (self.data)
                 .clone()

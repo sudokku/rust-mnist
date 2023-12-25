@@ -6,7 +6,7 @@ mod layer;
 mod activation;
 
 fn main() {
-    let hidden_layer: Layer = Layer::new(3, 2);
+    let mut hidden_layer: Layer = Layer::new(3, 2);
     let output_layer: Layer = Layer::new(1, 3);
 
     let input = vec![
@@ -18,6 +18,8 @@ fn main() {
 
     let answers = vec![1.0, 0.0, 1.0, 0.0];
 
+    print!("{:#?}", hidden_layer);
+    hidden_layer.feed_from(input[0].clone());
     print!("{:#?}", hidden_layer);
 }
 
