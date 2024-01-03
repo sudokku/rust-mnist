@@ -3,10 +3,10 @@ use crate::{matrix::Matrix, activation::ActivationFunction};
 #[derive(Debug)]
 pub struct Layer{
     size: usize,
-    neurons: Matrix,
-    weights: Matrix,
-    biases: Matrix,
-    activator: ActivationFunction
+    pub neurons: Matrix,
+    pub weights: Matrix,
+    pub biases: Matrix,
+    pub activator: ActivationFunction
 }
 
 impl Layer {
@@ -31,7 +31,15 @@ impl Layer {
         temp.data[0].clone()
     }
 
-    pub fn back_propagate(&mut self){
+    pub fn back_propagate(&mut self, next_layer_delta: Matrix, inputs: &Matrix, learning_rate: f64){
+        let gradient = self.neurons.map(|x| self.activator.derivative(x));
+        let layer_delta = next_layer_delta * self.weights.transpose() * gradient;
+
         
+        let weights_adjustment = inputs.transpose() * layer_delta.clone();
+        let biases_adjustment = layer_delta;
+
+        self.weights = self.weights.clone() - weights_adjustment.map(|x| x * learning_rate);
+        self.biases = self.biases.clone() - biases_adjustment.map(|x| x * learning_rate);
     }
 }
