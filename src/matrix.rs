@@ -31,6 +31,18 @@ impl Matrix{
         res
     }
 
+    pub fn transpose(&self) -> Matrix {
+        let mut res = Matrix::zeros(self.cols, self.rows);
+
+        for i in 0..res.rows {
+            for j in 0..res.cols {
+                res.data[i][j] = self.data[j][i];
+            }
+        }
+
+        res
+    }
+
     pub fn map<F>(&self, functor: F) -> Matrix
     where
         F: Fn(f64) -> f64,
